@@ -59,12 +59,12 @@ def play():
             print(contador)
             time.sleep(1)
 
-print(contador)       
-# botao_play = Button(janela, text='Play', command=play,width=10, height=2, bg='#FF6242', fg='white', font=('Ivy 12 bold'), relief='raised', overrelief='ridge')
-# botao_play.place(x=650, y=270)
-# botao_pause = Button(janela, text='Pause', width=10, height=2, bg='#FF6242', fg='white', font=('Ivy 12 bold'), relief='raised', overrelief='ridge')
-# botao_pause.place(x=770, y=270)
-# label_relogio = Label(janela, text=contador, font=('Times 150 bold'), fg='#DB524D', bg='#97CDB5')
-# label_relogio.place(x=50,y=50)
+      
+botao_play = Button(janela, text='Play', command=play,width=10, height=2, bg='#FF6242', fg='white', font=('Ivy 12 bold'), relief='raised', overrelief='ridge')
+botao_play.place(x=650, y=270)
+botao_pause = Button(janela, text='Pause', width=10, height=2, bg='#FF6242', fg='white', font=('Ivy 12 bold'), relief='raised', overrelief='ridge')
+botao_pause.place(x=770, y=270)
+label_relogio = Label(janela, text='00:00', font=('Times 150 bold'), fg='#DB524D', bg='#97CDB5')
+label_relogio.place(x=50,y=50)
 
 janela.mainloop()
