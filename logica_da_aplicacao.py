@@ -43,5 +43,3 @@ while True:
             pausa_c -= 1
         print('Acabou a pausa curta')
         t = pomodoro
-
-
