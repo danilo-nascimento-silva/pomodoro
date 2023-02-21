@@ -1,6 +1,6 @@
 import PySimpleGUI as sg #Biblioteca para interface 
 import time #Biblioteca para contar tempo
-from playsound import playsound
+import winsound
 
 # Verifica se a string representa um inteiro
 
@@ -13,7 +13,13 @@ def isInt(value):
     except:
         return False
 
-# ------------------------------------ Função que mantém a pagina inicial ------------------------------------
+# Função que emite um som de alerta 
+
+def alarme():
+    winsound.MessageBeep(type=-1)
+
+# Função que mantém a pagina inicial
+
 def janela_inicial():
     sg.theme('Reddit')   # Tema da pagia
     layout = [  [sg.Text('Get Ready')], # Nome topo da pagina
@@ -23,7 +29,9 @@ def janela_inicial():
                 [sg.Button('Play', size=(22, 1))] ] # Botão para o iniciar 
 
     return sg.Window('Inicial', layout=layout, finalize=True)
-# ------------------------------------ Função que mantém a pagina de foco ------------------------------------
+
+# Função que mantém a pagina de foco 
+
 def janela_focus(t_, p_):
     sg.theme('DarkRed2')   # Tema da pagia
     layout = [  [sg.Text('Focus Time               '), (sg.Text(p_, key='qtd_focus'))], # Nome topo da pagina
@@ -31,7 +39,9 @@ def janela_focus(t_, p_):
                 [sg.Button('Play'), sg.Button('Pause'), sg.Button('Restart')] ] # Botões de Play, pause e Restart 
 
     return sg.Window('Focus', layout=layout, finalize=True)
-# ------------------------------------ Função que mantém a pagina de descanso ------------------------------------
+
+# Função que mantém a pagina de descanso
+
 def janela_break(p_, q):
     sg.theme('DarkGreen')   # Tema da pagia
     layout = [  [sg.Text('Break Time     '), (sg.Text(q, key='qtd_focus'))], # Nome topo da pagina
@@ -40,14 +50,17 @@ def janela_break(p_, q):
 
     return sg.Window('Break', layout=layout, finalize=True)
 
+# Função que converte o tempo de segundos para minutos e formata a saída
+
 def convert_temp(i):
     minutos, segundos = divmod(i, 60)
     return"{:02d}:{:02d}".format(minutos, segundos)
+
 janela1, janela2, janela3 = janela_inicial(), None, None # Variáveis que recebe as paginas 
 
 t = 0 # guarda o tempo de foco no decorrer do código
 p = 0 # guarda o tempo de pausa no decorrer do código
-quant_p = 0
+quant_p = 0 # Guarda a quantidade de ciclos para diferenciar de pausa curta ou longa
 pomodoro = 0 # Guarda o tempo inicial configurado para foco 
 
 flag_decrement_time_focus = False
@@ -60,7 +73,9 @@ last_window = None
 
 
 while True:
+
     window, event, values = sg.read_all_windows(timeout=100)
+
     if window is not None:
         last_window = window
     else: 
@@ -70,6 +85,7 @@ while True:
 
     if window == janela1 and event == sg.WIN_CLOSED: 
         break
+
     if window == janela2 and event == sg.WIN_CLOSED:
         janela1.un_hide()
         janela2.close() 
@@ -79,8 +95,6 @@ while True:
         janela1.un_hide()
         janela3.close() 
         flag_decrement_time_focus = False
-    
-# ---------------------------------------------------------------------------------------------------------------------------
 
     if window == janela3 and event == 'Play':
         time_init_pause = time.time() # Salva o start
@@ -113,6 +127,7 @@ while True:
             
         if t -running_time < 0:
             janela2.close()
+            alarme()
             if quant_p == 3:
                 janela3 = janela_break(900, quant_p)
                 quant_p = 0
